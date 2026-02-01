@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dhiya 💗</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #ffd1dc, #ff8fab);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* floating hearts */
+    .heart {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.6);
+      transform: rotate(45deg);
+      animation: float 8s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -6px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -6px;
+      top: 0;
+    }
+
+    @keyframes float {
+      from {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.93);
+      padding: 50px 45px;
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+      max-width: 380px;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    p {
+      font-size: 17px;
+      color: #444;
+      margin-bottom: 35px;
+    }
+
+    .buttons {
+      position: relative;
+      height: 60px;
+    }
+
+    button {
+      position: absolute;
+      padding: 14px 30px;
+      font-size: 16px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.35s ease;
+    }
+
+    #yes {
+      left: 20px;
+      background: #ff4d6d;
+      color: white;
+      box-shadow: 0 8px 20px rgba(255, 77, 109, 0.5);
+    }
+
+    #yes:hover {
+      transform: scale(1.05);
+    }
+
+    #no {
+      right: 20px;
+      background: #e0e0e0;
+      color: #333;
+    }
+
+    #result {
+      display: none;
+      margin-top: 28px;
+      font-size: 24px;
+      color: #ff2e63;
+      line-height: 1.45;
+    }
+
+    #final {
+      display: none;
+      margin-top: 18px;
+      font-size: 15px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- soft background music -->
+  <audio id="music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- floating hearts -->
+  <script>
+    for (let i = 0; i < 26; i++) {
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.style.left = Math.random() * 100 + "vw";
+      h.style.animationDuration = 5 + Math.random() * 5 + "s";
+      h.style.opacity = Math.random();
+      document.body.appendChild(h);
+    }
+  </script>
+
+  <div class="card">
+    <h1>Dhiya 💗</h1>
+    <p>Will you be my Valentine?</p>
+
+    <div class="buttons">
+      <button id="yes">Yes</button>
+      <button id="no">No</button>
+    </div>
+
+    <div id="result">
+      Hooray ✨<br />
+      You’re my Valentine 💗
+    </div>
+
+    <div id="final">
+      I don’t promise perfection,<br>
+      just honesty, care,<br>
+      and choosing you every day.
+    </div>
+  </div>
+
+  <script>
+    const yes = document.getElementById("yes");
+    const no = document.getElementById("no");
+    const result = document.getElementById("result");
+    const finalMsg = document.getElementById("final");
+    const music = document.getElementById("music");
+
+    function startMusic() {
+      music.volume = 0.3;
+      music.play().catch(() => {});
+    }
+
+    function accept() {
+      startMusic();
+      yes.style.display = "none";
+      no.style.display = "none";
+      result.style.display = "block";
+
+      setTimeout(() => {
+        finalMsg.style.display = "block";
+      }, 1200);
+    }
+
+    yes.addEventListener("click", accept);
+
+    no.addEventListener("click", () => {
+      startMusic();
+      yes.style.left = "50%";
+      yes.style.transform = "translateX(-50%) scale(1.1)";
+      yes.style.zIndex = "3";
+
+      setTimeout(accept, 900);
+    });
+  </script>
+
+</body>
+        </html>
