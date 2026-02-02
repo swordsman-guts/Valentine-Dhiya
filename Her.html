@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dhiya 💗</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 2;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  p {
+    color: #555;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  button {
+    padding: 12px 22px;
+    font-size: 16px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #yes {
+    background: #2ecc71;
+    color: white;
+  }
+
+  #no {
+    background: #e74c3c;
+    color: white;
+  }
+
+  /* NO button shake */
+  .shake {
+    animation: shake 0.4s;
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+
+  /* Petal-style hearts */
+  .petal {
+    position: fixed;
+    top: -20px;
+    font-size: 18px;
+    opacity: 0.8;
+    animation: fall linear forwards;
+    z-index: 1;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(110vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  .fullscreen {
+    position: fixed;
+    inset: 0;
+    background: #2ecc71;
+    color: white;
+    font-size: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    animation: pop 0.6s ease;
+  }
+
+  @keyframes pop {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+</style>
+</head>
+
+<body>
+
+<audio id="bgm" src="music.mp3" loop></audio>
+
+<div class="card" id="card" onclick="playMusicOnce()">
+  <h1 id="question">Dhiya… will you be my Valentine? 💗</h1>
+  <div class="buttons">
+    <button id="yes" onclick="yesClick()">Yes</button>
+    <button id="no" onclick="noClick()">No</button>
+  </div>
+</div>
+
+<script>
+  const questions = [
+    "Are you really sure? 🥺",
+    "Like… really really sure? 💭",
+    "Last chance… you & me? 💞",
+    "Okay final question… will you be my Valentine? 💘"
+  ];
+
+  const noTexts = ["No", "You sure?", "Really?", "Think again 😭"];
+  let step = 0;
+  let yesSize = 1;
+  let musicPlayed = false;
+
+  function playMusicOnce() {
+    if (!musicPlayed) {
+      document.getElementById("bgm").play();
+      musicPlayed = true;
+    }
+  }
+
+  function noClick() {
+    const noBtn = document.getElementById("no");
+    noBtn.classList.add("shake");
+    setTimeout(() => noBtn.classList.remove("shake"), 400);
+
+    yesSize += 0.25;
+    document.getElementById("yes").style.transform = `scale(${yesSize})`;
+
+    noBtn.innerText =
+      noTexts[Math.min(step + 1, noTexts.length - 1)];
+
+    if (step < questions.length - 1) {
+      step++;
+      document.getElementById("question").innerText = questions[step];
+    }
+  }
+
+  function yesClick() {
+    playMusicOnce();
+
+    if (step < questions.length - 1) {
+      step++;
+      yesSize += 0.15;
+      document.getElementById("yes").style.transform = `scale(${yesSize})`;
+      document.getElementById("question").innerText = questions[step];
+    } else {
+      showFinal();
+    }
+  }
+
+  function showFinal() {
+    document.body.innerHTML = `
+      <div class="fullscreen">
+        💗 SHE SAID YES 💗
+      </div>
+    `;
+
+    setTimeout(() => {
+      document.body.innerHTML = `
+        <div class="card">
+          <h1>Thank you for being my Valentine, Dhiya 💞</h1>
+          <p>
+            This wasn’t just a question.<br>
+            It was my heart choosing you.<br><br>
+            I hope this made you smile 🌷
+          </p>
+        </div>
+      `;
+    }, 2500);
+  }
+
+  /* Petal generator */
+  const petals = ["🌸", "💮", "🌷"];
+
+  setInterval(() => {
+    const petal = document.createElement("div");
+    petal.className = "petal";
+    petal.innerText = petals[Math.floor(Math.random() * petals.length)];
+    petal.style.left = Math.random() * 100 + "vw";
+    petal.style.animationDuration = (4 + Math.random() * 4) + "s";
+    petal.style.fontSize = (16 + Math.random() * 22) + "px";
+    document.body.appendChild(petal);
+
+    setTimeout(() => petal.remove(), 8000);
+  }, 350);
+</script>
+
+</body>
+  </html>
