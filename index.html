@@ -1,209 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Dhiya 💗</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<title>Dhiya 💗</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body {
-      margin: 0;
-      height: 100vh;
-      font-family: "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #ffd1dc, #ff8fab);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffd6e8, #ffffff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
 
-    /* floating hearts */
-    .heart {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      background: rgba(255, 255, 255, 0.6);
-      transform: rotate(45deg);
-      animation: float 8s linear infinite;
-    }
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 22px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  text-align: center;
+  width: 320px;
+  z-index: 5;
+}
 
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 50%;
-    }
+h1 {
+  font-size: 22px;
+}
 
-    .heart::before {
-      top: -6px;
-      left: 0;
-    }
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 25px;
+}
 
-    .heart::after {
-      left: -6px;
-      top: 0;
-    }
+button {
+  border: none;
+  padding: 12px 22px;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
-    @keyframes float {
-      from {
-        transform: translateY(100vh) rotate(45deg);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(-10vh) rotate(45deg);
-        opacity: 0;
-      }
-    }
+#yesBtn {
+  background: #2ecc71;
+  color: white;
+}
 
-    .card {
-      background: rgba(255, 255, 255, 0.93);
-      padding: 50px 45px;
-      border-radius: 22px;
-      text-align: center;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
-      max-width: 380px;
-      z-index: 2;
-    }
+#noBtn {
+  background: #e74c3c;
+  color: white;
+}
 
-    h1 {
-      font-size: 30px;
-      margin-bottom: 10px;
-      color: #222;
-    }
+.shake {
+  animation: shake 0.4s;
+}
 
-    p {
-      font-size: 17px;
-      color: #444;
-      margin-bottom: 35px;
-    }
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
 
-    .buttons {
-      position: relative;
-      height: 60px;
-    }
+/* 🌷 Petals */
+.petal {
+  position: fixed;
+  top: -20px;
+  font-size: 20px;
+  animation: fall linear infinite;
+  opacity: 0.85;
+}
 
-    button {
-      position: absolute;
-      padding: 14px 30px;
-      font-size: 16px;
-      border-radius: 30px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.35s ease;
-    }
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
 
-    #yes {
-      left: 20px;
-      background: #ff4d6d;
-      color: white;
-      box-shadow: 0 8px 20px rgba(255, 77, 109, 0.5);
-    }
+#final {
+  display: none;
+  text-align: center;
+}
 
-    #yes:hover {
-      transform: scale(1.05);
-    }
+#final h2 {
+  color: #e84393;
+  font-size: 26px;
+}
 
-    #no {
-      right: 20px;
-      background: #e0e0e0;
-      color: #333;
-    }
-
-    #result {
-      display: none;
-      margin-top: 28px;
-      font-size: 24px;
-      color: #ff2e63;
-      line-height: 1.45;
-    }
-
-    #final {
-      display: none;
-      margin-top: 18px;
-      font-size: 15px;
-      color: #555;
-    }
-  </style>
+.hidden {
+  display: none;
+  margin-top: 15px;
+  color: #555;
+}
+</style>
 </head>
+
 <body>
 
-  <!-- soft background music -->
-  <audio id="music" loop>
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
+<!-- 🎵 MUSIC -->
+<audio id="bgm" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
 
-  <!-- floating hearts -->
-  <script>
-    for (let i = 0; i < 26; i++) {
-      const h = document.createElement("div");
-      h.className = "heart";
-      h.style.left = Math.random() * 100 + "vw";
-      h.style.animationDuration = 5 + Math.random() * 5 + "s";
-      h.style.opacity = Math.random();
-      document.body.appendChild(h);
-    }
-  </script>
-
-  <div class="card">
-    <h1>Dhiya 💗</h1>
-    <p>Will you be my Valentine?</p>
-
-    <div class="buttons">
-      <button id="yes">Yes</button>
-      <button id="no">No</button>
-    </div>
-
-    <div id="result">
-      Hooray ✨<br />
-      You’re my Valentine 💗
-    </div>
-
-    <div id="final">
-      I don’t promise perfection,<br>
-      just honesty, care,<br>
-      and choosing you every day.
-    </div>
+<div class="card" id="card">
+  <h1 id="question">Dhiya… will you be my Valentine? 💗</h1>
+  <div class="buttons">
+    <button id="yesBtn" onclick="yesClick()">Yes 💚</button>
+    <button id="noBtn" onclick="noClick()">No ❤️</button>
   </div>
+</div>
 
-  <script>
-    const yes = document.getElementById("yes");
-    const no = document.getElementById("no");
-    const result = document.getElementById("result");
-    const finalMsg = document.getElementById("final");
-    const music = document.getElementById("music");
+<div class="card" id="final">
+  <h2>HOORAY 💐💗</h2>
+  <p>Thanks for being my Valentine.</p>
+  <p>🌷 Remember this moment.</p>
+  <button onclick="unlock()">💌 Open message</button>
+  <div class="hidden" id="secret">
+    This wasn’t just a click.<br>
+    It’s a memory I’ll always keep 💗
+  </div>
+</div>
 
-    function startMusic() {
-      music.volume = 0.3;
-      music.play().catch(() => {});
-    }
+<script>
+let step = 0;
+let musicPlayed = false;
 
-    function accept() {
-      startMusic();
-      yes.style.display = "none";
-      no.style.display = "none";
-      result.style.display = "block";
+const questions = [
+  "Are you sure? 💭",
+  "Really sure? 🥺",
+  "Last chance 😳",
+  "Okay… final question 💗"
+];
 
-      setTimeout(() => {
-        finalMsg.style.display = "block";
-      }, 1200);
-    }
+function playMusic() {
+  if (!musicPlayed) {
+    const m = document.getElementById("bgm");
+    m.volume = 0.7;
+    m.play();
+    musicPlayed = true;
+  }
+}
 
-    yes.addEventListener("click", accept);
+function noClick() {
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
 
-    no.addEventListener("click", () => {
-      startMusic();
-      yes.style.left = "50%";
-      yes.style.transform = "translateX(-50%) scale(1.1)";
-      yes.style.zIndex = "3";
+  noBtn.classList.add("shake");
+  setTimeout(() => noBtn.classList.remove("shake"), 400);
 
-      setTimeout(accept, 900);
-    });
-  </script>
+  document.getElementById("question").innerText =
+    step < questions.length ? questions[step] : "You know the answer 😉";
+
+  yesBtn.style.transform = `scale(${1 + step * 0.35})`;
+  step++;
+}
+
+function yesClick() {
+  playMusic(); // 🎵 starts here
+
+  if (step >= questions.length) {
+    document.getElementById("card").style.display = "none";
+    document.getElementById("final").style.display = "block";
+    startPetals();
+  } else {
+    noClick();
+  }
+}
+
+function unlock() {
+  document.getElementById("secret").style.display = "block";
+}
+
+function startPetals() {
+  setInterval(() => {
+    const petal = document.createElement("div");
+    petal.className = "petal";
+    petal.innerText = "🌷";
+    petal.style.left = Math.random() * 100 + "vw";
+    petal.style.animationDuration = 3 + Math.random() * 3 + "s";
+    document.body.appendChild(petal);
+    setTimeout(() => petal.remove(), 6000);
+  }, 300);
+}
+</script>
 
 </body>
-        </html>
+  </html>
