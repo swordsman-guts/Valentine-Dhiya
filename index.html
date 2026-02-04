@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(180deg, #ffe6ef, #ffffff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.container {
+  text-align: center;
+  z-index: 5;
+}
+
+h1 {
+  font-size: 2.1em;
+  margin-bottom: 20px;
+}
+
+.name {
+  color: #ff5c8a;
+  text-shadow: 0 0 12px rgba(255, 92, 138, 0.6);
+  font-weight: 600;
+}
+
+button {
+  padding: 12px 30px;
+  font-size: 1.1em;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin: 10px;
+  transition: 0.3s ease;
+}
+
+#yes {
+  background: #3cb371;
+  color: white;
+}
+
+#no {
+  background: #ff4d4d;
+  color: white;
+  position: relative;
+}
+
+.shake {
+  animation: shake 0.4s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.fadeText {
+  position: absolute;
+  font-size: 1.8em;
+  opacity: 0;
+  animation: fadeLong 7s forwards;
+  z-index: 6;
+}
+
+@keyframes fadeLong {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.glow {
+  text-shadow: 0 0 18px pink;
+}
+
+#couple {
+  position: absolute;
+  width: 70%;
+  max-width: 320px;
+  opacity: 0;
+  z-index: 1;
+  animation: imageCinematic 9s forwards;
+}
+
+@keyframes imageCinematic {
+  0% { opacity: 0; transform: scale(0.95); }
+  20% { opacity: 0.18; transform: scale(1); }
+  70% { opacity: 0.18; }
+  100% { opacity: 0; transform: scale(1.05); }
+}
+
+.petal {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: pink;
+  border-radius: 50%;
+  animation: fall linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes fall {
+  from { transform: translateY(-10vh); }
+  to { transform: translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgm" src="music.mp3"></audio>
+
+<div class="container" id="box">
+  <h1><span class="name">Dhiya</span>, will you be my Valentine?</h1>
+  <button id="yes" onclick="yesClick()">Yes</button>
+  <button id="no" onclick="noClick()">No</button>
+</div>
+
+<script>
+let noStep = 0;
+let yesScale = 1;
+let musicPlayed = false;
+
+const noQuestions = [
+  "Are you sure?",
+  "Really sure?",
+  "Think again…",
+  "You sure about this?",
+  "Last warning…",
+  "This is risky…",
+  "You might regret this…",
+  "Final chance.",
+  "Okay… don’t say I didn’t try."
+];
+
+function noClick() {
+  const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+
+  noBtn.innerText = noQuestions[Math.min(noStep, noQuestions.length - 1)];
+  noBtn.classList.add("shake");
+  setTimeout(() => noBtn.classList.remove("shake"), 400);
+
+  yesScale += 0.45;
+  yesBtn.style.transform = `scale(${yesScale})`;
+
+  noBtn.style.transform = `translateX(${noStep * 18}px)`;
+
+  noStep++;
+}
+
+function yesClick() {
+  document.getElementById("box").remove();
+  showText("Thanks for clicking YES", false);
+
+  setTimeout(() => {
+    showText("Thanks for being my Valentine", true);
+    startMusic();
+    petals();
+    timeline();
+  }, 7000);
+}
+
+function startMusic() {
+  if (!musicPlayed) {
+    document.getElementById("bgm").play();
+    musicPlayed = true;
+  }
+}
+
+function showText(text, glow=false, duration=7000) {
+  const div = document.createElement("div");
+  div.className = "fadeText";
+  if (glow) div.classList.add("glow");
+  div.innerText = text;
+  document.body.appendChild(div);
+  setTimeout(() => div.remove(), duration);
+}
+
+function showImage(src, duration=9000) {
+  const img = document.createElement("img");
+  img.id = "couple";
+  img.src = src;
+  document.body.appendChild(img);
+  setTimeout(() => img.remove(), duration);
+}
+
+function timeline() {
+  setTimeout(() => {
+    showImage("kanroji_obanai.png");
+    showText("I’ll call you Kanroji if I’m your Obanai 💗", true, 9000);
+  }, 6000);
+
+  setTimeout(() => {
+    showText("If love were a fight, I’d guard you like a Hashira 💗");
+  }, 16000);
+
+  setTimeout(() => {
+    showImage("chainsaw_love.png");
+    showText("Even chainsaws wouldn’t scare me if you’re beside me 💗", true, 9000);
+  }, 23000);
+
+  setTimeout(() => {
+    showText("I’m really glad it’s you 💗", true, 9000);
+  }, 32000);
+
+  setTimeout(() => {
+    showText("This song is for you", false, 8000);
+  }, 41000);
+}
+
+function petals() {
+  setInterval(() => {
+    const p = document.createElement("div");
+    p.className = "petal";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = "9s";
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 9000);
+  }, 350);
+}
+</script>
+
+</body>
+</html>
