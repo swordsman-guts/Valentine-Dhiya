@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(180deg, #ffe6ef, #ffffff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ================= QUESTION BOX ================= */
+.container {
+  text-align: center;
+  z-index: 20;
+}
+
+h1 {
+  font-size: 2.1em;
+  margin-bottom: 25px;
+}
+
+button {
+  padding: 12px 30px;
+  font-size: 1.1em;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin: 10px;
+  transition: transform 0.3s ease;
+}
+
+/* YES */
+#yes {
+  background: #3cb371;
+  color: white;
+  position: relative;
+  z-index: 10;
+}
+
+/* NO (fixed size, never grows) */
+#no {
+  background: #ff4d4d;
+  color: white;
+  width: 170px;
+  min-height: 52px;
+  text-align: center;
+  white-space: normal;
+  line-height: 1.2;
+  z-index: 5;
+}
+
+/* ================= EFFECTS ================= */
+.shake {
+  animation: shake 0.4s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+/* ================= FADE TEXT ================= */
+.fadeText {
+  position: absolute;
+  font-size: 1.8em;
+  opacity: 0;
+  animation: fadeLong 7s forwards;
+  z-index: 30;
+  text-align: center;
+  padding: 0 20px;
+}
+
+@keyframes fadeLong {
+  0% { opacity: 0; transform: translateY(10px); }
+  15% { opacity: 1; transform: translateY(0); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.glow {
+  text-shadow: 0 0 18px pink;
+}
+
+/* ================= IMAGE ================= */
+#couple {
+  position: absolute;
+  top: 10%;
+  width: 75%;
+  max-width: 360px;
+  opacity: 0;
+  z-index: 8;
+  animation: imageCinematic 8s forwards;
+}
+
+@keyframes imageCinematic {
+  0% { opacity: 0; transform: scale(0.9); }
+  20% { opacity: 0.75; transform: scale(1); }
+  70% { opacity: 0.75; }
+  100% { opacity: 0; transform: scale(1.05); }
+}
+
+/* ================= PETALS ================= */
+.petal {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: pink;
+  border-radius: 50%;
+  animation: fall linear infinite;
+  opacity: 0.7;
+  z-index: 1;
+}
+
+@keyframes fall {
+  from { transform: translateY(-10vh); }
+  to { transform: translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgm" src="music.mp3"></audio>
+
+<div class="container" id="box">
+  <h1>Dhiya, will you be my Valentine?</h1>
+  <button id="yes" onclick="yesClick()">Yes</button>
+  <button id="no" onclick="noClick()">No</button>
+</div>
+
+<script>
+let noStep = 0;
+let yesScale = 1;
+let musicPlayed = false;
+
+const noQuestions = [
+  "Are you sure?",
+  "Really sure?",
+  "Think again…",
+  "Last chance."
+];
+
+/* ================= NO CLICK (YES TAKES OVER) ================= */
+function noClick() {
+  const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+
+  noBtn.innerText = noQuestions[Math.min(noStep, noQuestions.length - 1)];
+  noBtn.classList.add("shake");
+  setTimeout(() => noBtn.classList.remove("shake"), 400);
+
+  let growth = 0.35;
+  if (noStep >= noQuestions.length - 2) growth = 0.9;
+
+  yesScale += growth;
+  yesBtn.style.transform = `scale(${yesScale})`;
+
+  noStep++;
+}
+
+/* ================= YES CLICK ================= */
+function yesClick() {
+  document.getElementById("box").remove();
+  showText("Thanks for clicking YES", false);
+
+  setTimeout(() => {
+    showText("Thanks for being my Valentine", true);
+    startMusic();
+    petals();
+    timeline();
+  }, 7000);
+}
+
+/* ================= MUSIC ================= */
+function startMusic() {
+  if (!musicPlayed) {
+    document.getElementById("bgm").play();
+    musicPlayed = true;
+  }
+}
+
+/* ================= TEXT ================= */
+function showText(text, glow) {
+  const div = document.createElement("div");
+  div.className = "fadeText";
+  if (glow) div.classList.add("glow");
+  div.innerText = text;
+  document.body.appendChild(div);
+  setTimeout(() => div.remove(), 7000);
+}
+
+/* ================= TIMELINE ================= */
+function timeline() {
+  setTimeout(() => {
+    const img = document.createElement("img");
+    img.id = "couple";
+    img.src = "kanroji_obanai.png";
+    document.body.appendChild(img);
+
+    showText("I’ll call you Kanroji if I’m your Obanai 💗", true);
+    setTimeout(() => img.remove(), 8000);
+  }, 6000);
+
+  setTimeout(() => {
+    const img = document.createElement("img");
+    img.id = "couple";
+    img.src = "chainsaw_love.png";
+    document.body.appendChild(img);
+
+    showText("Even chainsaws wouldn’t scare me if you’re beside me 💗", true);
+    setTimeout(() => img.remove(), 8000);
+  }, 14000);
+
+  setTimeout(() => {
+    showText("I’m really glad it’s you 💗", true);
+  }, 22000);
+
+  setTimeout(() => {
+    showText("This song is for you", false);
+  }, 30000);
+}
+
+/* ================= PETALS ================= */
+function petals() {
+  setInterval(() => {
+    const p = document.createElement("div");
+    p.className = "petal";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = "8s";
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 8000);
+  }, 350);
+}
+</script>
+
+</body>
+  </html>
